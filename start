@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -z "$APP" ]; then
+    export APP=app.js
+fi
+
+cd /app
+npm install
+pm2 start $APP --no-daemon
