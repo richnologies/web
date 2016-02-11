@@ -30,8 +30,8 @@
           <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
             <h2>Gardabateas</h2>
               <p>
-                El Gardabateas es un sistema integral de seguridad para bateas. Cosnta de un poste ubicado en el centro
-                de la batea sobre el que se montan un serie de detectores de movimiento y una camara IP de video de 359º.
+                El Gardabateas es un sistema integral de seguridad para bateas. Consta de un poste ubicado en el centro
+                de la batea sobre el que se montan un serie de detectores de movimiento y una cámara IP de video de 359º.
                 El sistema cuenta también con un servicio de acuda, que es prestado por una empresa colaboradora que
                 cuenta con los medios tanto humanos como materiales, además de la experiencia en seguridad.
               </p>
@@ -44,43 +44,43 @@
                 La alimentación eléctrica es proporcionada mediante paneles solares, por lo que el mantenimiento de
                 la instalación es mínimo. Dado que para funcionar correctamente, el sistema necesita estar conectado a
                 internet, han llegado por parte de clientes potenciales aplicaciones para dicha conectividad. Actualmente
-                se esta trabajando en la implementación de mediciones de tipo biologico (temperatura, oxigenación y salinidad)
+                se esta trabajando en la implementación de mediciones de tipo biológico (temperatura, oxigenación y salinidad)
               </p>
               <img src="/img/gardabateas/bateas04.jpg" alt="Detalle del sistema">
             <h3>¿Cómo funciona?</h3>
               <p>
                 Los datos de los sensores instalados en la batea son recogidos por una Raspberry PI y enviados
-                a un servidor remoto periodicamente. Dicho periodo puede variar en función de los valores de los sensores.
+                a un servidor remoto periódicamente. Dicho periodo puede variar en función de los valores de los sensores.
                 Una vez en el servidor, dichos datos son procesados en conjunto, teniendo en cuenta valores anteriores, el
-                historico de la batea, las condiciones climáticas, la hora del día, etc... El algoritmo utilizado en una
+                histórico de la batea, las condiciones climáticas, la hora del día, etc... El algoritmo utilizado en una
                 sencilla regresión logística.
               </p>
               <p>
                 A día de hoy, porque ha ido mejorando poco a poco. Las bateas están todas conectadas con el servidor a través
                 de sockets que se dejan abiertos. Este socket permite la comunicación bidireccional, por lo que se puede
                 enviar una orden a la batea en cualquier momento. Las ordenes que se envían permiten controlar la cámara de forma
-                autonoma por parte del servidor, sin necesidad de intervención humana, en base a las medidas de los sensores.
+                autónoma por parte del servidor, sin necesidad de intervención humana, en base a las medidas de los sensores.
                 Además, los usuarios o vigilantes pueden conectarse a través de una aplicación web y controlar ellos la cámara.
                 Evidentemente las ordenes de un usuario tiene mayor prioridad que las del servidor a la hora de manipular la cámara.
               </p>
               <p>
                 Cuando se produce una alarma, se notifica. En este momento es posible hacerlo por teléfono a través de Twilio, o bien
-                por email. Mediante la aplicación web, a los usuarios se les indica la batea amenazada y el grado de amenenaza en
-                base a un parametro que denominamos severidad de la alarma. A través de la aplicación se pueden ver los videos
-                grabados por sistema, o conectarse con la camara para manipular la camara directamente.
+                por email. Mediante la aplicación web, a los usuarios se les indica la batea amenazada y el grado de la amenaza en
+                base a un parámetro que denominamos severidad de la alarma. A través de la aplicación se pueden ver los videos
+                grabados por sistema, o conectarse para manipular la cámara directamente.
               </p>
             <h3>Arquitectura del servidor</h3>
               <p>
                 A lo largo del desarrollo del proyecto, al arquitectura ha ido cambiando. Inicialmente los datos eran enviados por
-                peticiones HTTP periodicas y el servidor estaba programado en Python. Sin embargo, pronto se decidió que era mejor
+                peticiones HTTP periódicas y el servidor estaba programado en Python. Sin embargo, pronto se decidió que era mejor
                 opción el socket por su condición de bidireccional. De ese momento, teniendo en cuenta que potencialmente habría
                 multitud de sockets abiertos de manera simultánea, se decidió que el servidor debía estar programado en NodeJS.
               </p>
               <p>
                 La elección de Node trajo múltiples ventajas, destacando por encima de todo la sencillez y el rendimiento. Al
                 principio todo el servicio era una única aplicación Node, sin embargo, una de los problemas era que cada vez que
-                actualizabamos el codigo del servidor tirabamos todas conexiones de los clientes, obligandolos a reconectar. En
-                ese momento ya estabamos utilizando Docker, y se decidió crear una aplicación pequeña y muy simple, cuya única función
+                actualizábamos el código del servidor tirábamos todas las conexiones de los clientes, obligándolos a reconectar. En
+                ese momento ya estábamos utilizando Docker, y se decidió crear una aplicación pequeña y muy simple, cuya única función
                 fuera servidor de servidor de sockets para los clientes. Recibir los mensajes y guardarlos y enviar las ordenes, nada más.
                 La idea era que siendo algo tan concreto, sería mucho menos frecuente la necesidad de actualizar y por tanto
                 muchas menos las ocasiones en que se desconectaría a todos los clientes.
@@ -99,23 +99,23 @@
                 visual muy interesante para saber si hay algún problema con algún servicio.
               </p>
               <p>
-                Así, de esa idea tan sencilla, de no tirar a los clientes cuandon actualizamos, fue para nosotros el primer paso hacía una
+                Así, de esa idea tan sencilla, de no tirar a los clientes cuando actualizamos, fue para nosotros el primer paso hacía una
                 arquitectura basada en microservicios y con RabbitMQ como sistema de mensajería entre ellos. A día de hoy tenemos servicios
                 para gestionar el video en directo a través de ffmpeg, para convertirlo en *.webm. También tenemos un servicio de logging
                 distribuido que nos permite centralizar los logs de todos los microservicios en un solo sitio.
               </p>
               <p>
-                Por último, recientemente el Arduino fue sustituído por la Raspberry PI como encargado de recoger las señales de los sensores
+                Por último, recientemente el Arduino fue sustituido por la Raspberry PI como encargado de recoger las señales de los sensores
                 y enviarlas. Gracias a este cambio, ahora es posible actualizar el código de forma remota, grabar el video en la propia batea y
                 sobre todo, mejorar la seguridad. Si bien con el Arduino se logro un encriptación muy básica en base al AES-128, gracias a la
                 Raspberry hemos podido conectar todas las bateas a una VPN. Esto está relacionado con lo anterior puesto que en lugar de conectar
-                la aplicación principal, lo que se ha metido en la VPN para pemitir la conexión es el microservicio encargado de hacer de
+                la aplicación principal, lo que se ha metido en la VPN para permitir la conexión es el microservicio encargado de hacer de
                 servidor de sockets y el servicio de video.
               </p>
               <p>
                 En general esta arquitectura nos permite ser más flexibles en todos los aspectos. La escalabilidad consiste simplemente en
                 crear más containers de aquel servicio que se necesite. La coordinación se hace mediante RabbitMQ. A nivel humano, los
-                microservicios hacen más sencillo para una persona nueva hacerse con el codigo, puesto que puede ir entrada microservicio a
+                microservicios hacen más sencillo para una persona nueva hacerse con el código, puesto que puede ir entrada microservicio a
                 microservicio, sin verse en medio de gigantesco.
               </p>
               <p>
@@ -131,13 +131,13 @@
               <p>
                 Con el objetivo de automatizar al máximo todo lo que no sea programación, utilizamos bastantes herramientas.
                 Utilizamos GIT como sistema de control de versiones. Utilizamos Gulp para automatizar ciertas tareas en desarrollo, como los
-                tests y crear una version del codigo optimizada. Utilizamos Docker como crear los containers y docker-compose para
-                automatizar el despligue de todos los containers que componen la aplicación y sus conexiones. Estamos en la beta del proyecto
+                tests y crear una version del código optimizada. Utilizamos Docker como crear los containers y docker-compose para
+                automatizar el despliegue de todos los containers que componen la aplicación y sus conexiones. Estamos en la beta del proyecto
                 del Universal control plane de Docker, y realmente creemos que tiene muchas posibilidades.
               </p>
               <p>
-                Por último hemos creado un servidor de integración con Jenkins. Se encarga de ejectuar los tests, crear las nuevas
-                imagenes y lanzar los nuevos containers en el servidor de producción.
+                Por último hemos creado un servidor de integración con Jenkins. Se encarga de ejecutar los tests, crear las nuevas
+                imágenes y lanzar los nuevos containers en el servidor de producción.
               </p>
           </div>
         </div>
