@@ -10,5 +10,12 @@ module.exports = function(app) {
       res.render('index');
     });
 
+  publicRouter
+    .route('/gardabateas')
+    .get((req, res) => {
+      res.status(200);
+      res.render('gardabateas');
+    });
+
   app.use('/', publicRouter);
 };
