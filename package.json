@@ -11,22 +11,22 @@
   "author": "Ricardo Sanchez Gregorio <me@richnologies.io>",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.14.2",
-    "compression": "^1.6.1",
-    "ejs": "^2.4.1",
-    "express": "^4.13.4"
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2"
   },
   "devDependencies": {
-    "del": "3.0.0",
-    "eslint": "4.13.1",
-    "eslint-config-google": "0.9.1",
-    "gulp": "3.9.1",
-    "gulp-bump": "2.8.0",
-    "gulp-load-plugins": "1.5.0",
-    "gulp-nodemon": "2.2.1",
-    "gulp-rename": "1.2.2",
-    "gulp-task-listing": "1.0.1",
-    "run-sequence": "2.2.0",
-    "yargs": "10.0.3"
+    "del": "^3.0.0",
+    "eslint": "^4.13.1",
+    "eslint-config-google": "^0.9.1",
+    "gulp": "^3.9.1",
+    "gulp-bump": "^2.8.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-task-listing": "^1.0.1",
+    "run-sequence": "^2.2.0",
+    "yargs": "^10.0.3"
   }
 }
