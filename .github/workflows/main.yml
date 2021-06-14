@@ -1,0 +1,26 @@
+name: Main Deployment
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install Dependencies
+        run: npm install
+      - name: Build App
+        run: npm run build
+      - name: Deploy App
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -av --delete
+          path: /public
+          remote_path: ${{ secrets.TARGET }}/
+          remote_host: ${{ secrets.HOST }}
+          remote_user: ${{ secrets.USER }}
+          remote_key: ${{ secrets.KEY }}
